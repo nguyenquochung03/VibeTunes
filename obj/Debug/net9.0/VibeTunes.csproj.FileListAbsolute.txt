@@ -36,7 +36,6 @@ C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\scopedcss\bundle\VibeTunes.styles.css
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\scopedcss\projectbundle\VibeTunes.bundle.scp.css
-C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\compressed\chp0j6kgit-f8s4txhc1e.gz
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\compressed\9susgm819c-81s9uxy700.gz
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\compressed\h0m1lznbbl-6phqkwhklb.gz
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\compressed\vk4u2wh5a1-0xfqvr848q.gz
@@ -120,3 +119,5 @@ C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\refint\VibeTunes.dll
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\VibeTunes.pdb
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\VibeTunes.genruntimeconfig.cache
 C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\ref\VibeTunes.dll
+C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\VibeTunes.sourcelink.json
+C:\Files\Codes\.Net\VibeTunes\obj\Debug\net9.0\compressed\chp0j6kgit-54sdfvemxg.gz

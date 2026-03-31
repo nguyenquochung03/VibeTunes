@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: vibe-tunes
+    env: docker
+    plan: free
+    autoDeploy: true
