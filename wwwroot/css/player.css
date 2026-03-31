@@ -1,0 +1,306 @@
+/* Mini player — floating capsule */
+.mini-player {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  width: min(960px, calc(100% - 32px));
+  height: 72px;
+  border-radius: var(--vt-radius-full);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid var(--vt-border);
+  box-shadow: var(--vt-shadow-lg);
+  z-index: var(--vt-z-player);
+  transition: transform 0.3s ease-out;
+  overflow: hidden;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .mini-player {
+    background: rgba(15, 23, 42, 0.82);
+  }
+}
+
+.mini-player.is-hidden {
+  transform: translate(-50%, calc(100% + 40px));
+  pointer-events: none;
+}
+
+.mini-player.is-visible {
+  transform: translate(-50%, 0);
+}
+
+/* Progress bar — dải indigo mỏng trên mép capsule */
+.player-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(var(--vt-primary-rgb), 0.12);
+  cursor: pointer;
+  border-radius: var(--vt-radius-full) var(--vt-radius-full) 0 0;
+}
+
+.player-progress:hover {
+  height: 4px;
+}
+
+.player-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6366F1 0%, #818cf8 100%);
+  width: 0%;
+  transition: width 0.2s linear;
+  border-radius: 0 var(--vt-radius-full) var(--vt-radius-full) 0;
+}
+
+.player-body {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--vt-space-5);
+  gap: var(--vt-space-4);
+}
+
+.player-track-info {
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-3);
+  min-width: 0;
+}
+
+/* Nút heart trên mini player — không dùng layout overlay thẻ bài hát */
+.player-track-info .btn-favorite {
+  position: relative;
+  top: auto;
+  right: auto;
+  width: 44px;
+  height: 44px;
+  opacity: 1;
+  transform: none;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.player-track-info .btn-favorite:hover {
+  transform: scale(1.06);
+}
+
+.player-track-info .btn-favorite.is-favorited {
+  box-shadow: none;
+}
+
+.player-artwork {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--vt-radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.player-track-text {
+  min-width: 0;
+}
+
+.player-track-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vt-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.player-track-artist {
+  font-size: 11px;
+  color: var(--vt-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-3);
+}
+
+.player-lyrics-btn {
+  border: 1px solid var(--vt-border);
+}
+
+.player-visualizer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 22px;
+  opacity: 0.85;
+}
+
+.player-time {
+  font-size: 11px;
+  color: var(--vt-text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+  text-align: center;
+}
+
+.player-btn-play {
+  width: 52px;
+  height: 52px;
+  background: var(--vt-accent-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--vt-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, filter 0.3s ease-out;
+  box-shadow: 0 8px 20px rgba(var(--vt-primary-rgb), 0.35);
+}
+
+/* Trạng thái phát / tạm dừng — đồng bộ với class .is-playing (player.js) */
+.player-btn-play:not(.is-playing) #player-pause-icon {
+  display: none !important;
+}
+
+.player-btn-play.is-playing #player-play-icon {
+  display: none !important;
+}
+
+.player-btn-play.is-playing #player-pause-icon {
+  display: block !important;
+}
+
+.player-btn-play:hover {
+  transform: scale(1.06);
+  filter: brightness(1.05);
+}
+
+.player-btn-play:active {
+  transform: scale(0.95);
+}
+
+.player-btn-play.is-loading {
+  background: var(--vt-bg-subtle);
+  cursor: wait;
+}
+
+.player-volume {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--vt-space-2);
+}
+
+.volume-slider {
+  width: 80px;
+  accent-color: var(--vt-primary);
+  cursor: pointer;
+}
+
+.player-options {
+  position: relative;
+}
+
+.player-options-btn {
+  display: none;
+}
+
+.player-options-menu {
+  position: absolute;
+  right: 0;
+  bottom: 52px;
+  min-width: 180px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  transform-origin: top right;
+  transform: translateY(-10px) scale(0.95);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+}
+
+.player-options-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.player-options-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--vt-text-primary);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.player-options-item:hover {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  .player-options-menu {
+    background: rgba(30, 41, 59, 0.92);
+    border-color: rgba(148, 163, 184, 0.25);
+  }
+
+  .player-options-item:hover {
+    background: rgba(51, 65, 85, 0.45);
+  }
+}
+
+@media (max-width: 640px) {
+  .mini-player {
+    width: calc(100% - 24px);
+    bottom: 16px;
+  }
+
+  .player-body {
+    grid-template-columns: 1fr auto;
+    padding: 0 var(--vt-space-4);
+  }
+
+  .player-volume {
+    display: none;
+  }
+
+  .player-track-title {
+    font-size: 12px;
+  }
+
+  .player-track-artist {
+    font-size: 11px;
+  }
+
+  .player-lyrics-btn {
+    display: none;
+  }
+
+  .player-options-btn {
+    display: inline-flex;
+  }
+}
+

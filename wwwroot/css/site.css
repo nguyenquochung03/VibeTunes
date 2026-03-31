@@ -1,0 +1,149 @@
+:root {
+  /* Backgrounds */
+  --vt-bg-base: #F8FAFC;
+  --vt-bg-surface: rgba(255, 255, 255, 0.72);
+  --vt-bg-subtle: #E2E8F0;
+  --vt-bg-overlay: rgba(0, 0, 0, 0.40);
+
+  /* Brand / Primary */
+  --vt-primary: #6366F1;
+  --vt-primary-hover: #4F46E5;
+  --vt-primary-light: #EEF2FF;
+  --vt-primary-rgb: 99, 102, 241;
+  --vt-accent-gradient: linear-gradient(135deg, #6366F1 0%, #A855F7 100%);
+
+  /* Text */
+  --vt-text-primary: #1E293B;
+  --vt-text-secondary: #64748B;
+  --vt-text-muted: #94A3B8;
+  --vt-text-inverse: #FFFFFF;
+
+  /* Status */
+  --vt-success: #10B981;
+  --vt-success-light: #D1FAE5;
+  --vt-danger: #EF4444;
+  --vt-danger-light: #FEE2E2;
+  --vt-warning: #F59E0B;
+  --vt-warning-light: #FEF3C7;
+
+  /* Border */
+  --vt-border: #E2E8F0;
+  --vt-border-focus: #1E6FC3;
+
+  /* Shadow */
+  --vt-shadow-sm: 0 4px 10px rgba(15, 23, 42, 0.08);
+  --vt-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.10);
+  --vt-shadow-lg: 0 16px 34px rgba(15, 23, 42, 0.16);
+  /* Tailwind shadow-lg + ring-indigo-400 — ô tìm kiếm focus */
+  --vt-shadow-lg-soft: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.08);
+  --vt-ring-indigo-400: #818cf8;
+  --vt-shadow-player: 0 -2px 16px rgba(0, 0, 0, 0.10);
+
+  /* Radius */
+  --vt-radius-sm: 6px;
+  --vt-radius-md: 10px;
+  --vt-radius-lg: 16px;
+  --vt-radius-card: 1.25rem;
+  --vt-radius-full: 9999px;
+
+  /* Spacing scale */
+  --vt-space-1: 4px;
+  --vt-space-2: 8px;
+  --vt-space-3: 12px;
+  --vt-space-4: 16px;
+  --vt-space-5: 20px;
+  --vt-space-6: 24px;
+  --vt-space-8: 32px;
+  --vt-space-10: 40px;
+  --vt-space-12: 48px;
+
+  /* Transition */
+  --vt-transition-fast: 150ms ease;
+  --vt-transition-normal: 250ms ease;
+  --vt-transition-slow: 400ms ease;
+
+  /* Z-index layers */
+  --vt-z-player: 100;
+  --vt-z-modal: 200;
+  --vt-z-toast: 300;
+
+  /* Typography */
+  --vt-font-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --vt-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--vt-font-base);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--vt-text-primary);
+  background: var(--vt-bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: contain;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vt-bg-base: #0F172A;
+    --vt-bg-surface: rgba(15, 23, 42, 0.72);
+    --vt-bg-subtle: #1E293B;
+    --vt-text-primary: #E2E8F0;
+    --vt-text-secondary: #94A3B8;
+    --vt-border: rgba(148, 163, 184, 0.25);
+  }
+}
+
+a {
+  color: var(--vt-primary);
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+button { font-family: inherit; }
+
+img { max-width: 100%; display: block; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid var(--vt-border-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Scrollbar styling (WebKit) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--vt-border);
+  border-radius: var(--vt-radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--vt-text-muted); }
+
+/* SPA — chuyển Khám phá / Yêu thích không reload */
+.view-panel.is-hidden {
+  display: none !important;
+}

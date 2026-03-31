@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VibeTunes — Nghe thử nhạc trực tuyến" />
+  <title>@ViewData["Title"] VibeTunes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/css/search.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/css/player.css" asp-append-version="true" />
+
+  <link rel="icon" type="image/svg+xml" href="~/images/logo.svg" />
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="site-header-inner">
+    @{
+      var navInitial = ViewData["InitialView"] as string;
+    }
+    <a href="/" class="site-logo nav-spa" data-nav-view="explore" aria-label="VibeTunes trang chủ">
+      <i data-lucide="music-2" class="logo-icon"></i>
+      <span class="logo-text">VibeTunes</span>
+    </a>
+
+    <div class="search-bar-wrapper" role="search">
+      <div class="search-bar">
+        <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+        <input
+          type="search"
+          id="search-input"
+          class="search-input"
+          placeholder="Tìm kiếm bài hát, nghệ sĩ..."
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-label="Tìm kiếm bài hát"
+          maxlength="100"
+        />
+        <button class="btn-icon search-clear" id="search-clear-btn" aria-label="Xóa tìm kiếm" style="display:none;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="mood-bar mood-container" id="mood-bar" aria-label="Khám phá theo tâm trạng">
+        <button class="mood-chip" type="button" data-query="Electronic">
+          <span class="mood-chip__icon">🚀</span><span>High Energy</span>
+        </button>
+        <button class="mood-chip" type="button" data-query="Lo-fi">
+          <span class="mood-chip__icon">☕</span><span>Chill/Study</span>
+        </button>
+        <button class="mood-chip" type="button" data-query="Rock">
+          <span class="mood-chip__icon">🎸</span><span>Rock Out</span>
+        </button>
+        <button class="mood-chip" type="button" data-query="Dance">
+          <span class="mood-chip__icon">💃</span><span>Party</span>
+        </button>
+        <button class="mood-chip" type="button" data-query="Ambient">
+          <span class="mood-chip__icon">🧘</span><span>Focus</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="site-nav" aria-label="Navigation chính">
+      <a href="/" class="nav-link nav-spa @(navInitial == "explore" ? "is-active" : "")" data-nav-view="explore">
+        <i data-lucide="home"></i>
+        <span>Khám phá</span>
+      </a>
+      <a href="/Favorites" class="nav-link nav-spa @(navInitial == "favorites" ? "is-active" : "")" data-nav-view="favorites">
+        <i data-lucide="heart"></i>
+        <span>Yêu thích</span>
+        <span class="nav-badge" id="nav-fav-count" style="display:none;"></span>
+      </a>
+    </nav>
+    </div>
+    <div class="site-header__loading-bar" id="page-loading-bar" aria-hidden="true"></div>
+  </header>
+
+  @RenderBody()
+
+  <div id="mini-player" class="mini-player is-hidden" role="region" aria-label="Trình phát nhạc" aria-live="polite">
+    <div class="player-progress" id="player-progress" role="slider"
+      aria-label="Tiến trình" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="player-progress__bar" id="player-progress-bar"></div>
+    </div>
+
+    <div class="player-body">
+      <div class="player-track-info">
+        <img id="player-artwork" src="/images/placeholder-album.svg" alt="Album art" class="player-artwork"
+          onerror="this.src='/images/placeholder-album.svg'" />
+        <div class="player-track-text">
+          <p class="player-track-title" id="player-title">-</p>
+          <p class="player-track-artist" id="player-artist">-</p>
+        </div>
+        <button class="btn-favorite btn-icon" id="player-favorite-btn" aria-label="Thêm vào yêu thích" aria-pressed="false">
+          <i data-lucide="heart"></i>
+        </button>
+      </div>
+
+      <div class="player-controls">
+        <span class="player-time" id="player-current-time">0:00</span>
+        <button class="player-btn-play btn-icon" id="player-play-btn" type="button" aria-label="Phát">
+          <i data-lucide="play" id="player-play-icon"></i>
+          <i data-lucide="pause" id="player-pause-icon"></i>
+        </button>
+        <button class="btn-icon player-lyrics-btn" id="player-lyrics-btn" aria-label="Mở lời bài hát">
+          <i data-lucide="captions"></i>
+        </button>
+        <div class="player-options">
+          <button class="btn-icon player-options-btn" id="player-options-btn" aria-label="Tùy chọn trình phát" aria-expanded="false">
+            <i data-lucide="ellipsis"></i>
+          </button>
+          <div class="player-options-menu" id="player-options-menu" role="menu" aria-label="Tùy chọn trình phát">
+            <button type="button" class="player-options-item" id="player-options-lyrics">Lời bài hát</button>
+            <button type="button" class="player-options-item" id="player-options-mute">Bật/Tắt tiếng</button>
+          </div>
+        </div>
+        <span class="player-time" id="player-duration">0:30</span>
+      </div>
+
+      <div class="player-volume">
+        <button class="btn-icon" id="player-mute-btn" aria-label="Tắt tiếng">
+          <i data-lucide="volume-2" id="player-volume-icon"></i>
+          <i data-lucide="volume-x" id="player-mute-icon" style="display:none;"></i>
+        </button>
+        <input type="range" id="player-volume-slider" class="volume-slider"
+          min="0" max="1" step="0.05" value="0.8" aria-label="Âm lượng" />
+      </div>
+    </div>
+    <canvas id="player-visualizer" class="player-visualizer" aria-hidden="true"></canvas>
+
+    <audio id="audio-engine" preload="none" crossorigin="anonymous"></audio>
+  </div>
+
+  <div class="lyrics-modal-backdrop" id="lyrics-modal-backdrop" style="display:none;">
+    <div class="lyrics-modal" role="dialog" aria-modal="true" aria-labelledby="lyrics-modal-title">
+      <div class="lyrics-modal__header">
+        <h3 id="lyrics-modal-title">Lời bài hát</h3>
+        <button type="button" class="btn-icon" id="lyrics-modal-close-btn" aria-label="Đóng lời bài hát">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="lyrics-modal__meta" id="lyrics-modal-meta">-</div>
+      <div class="lyrics-modal__body" id="lyrics-modal-content">Chọn bài hát để xem lời.</div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <script src="~/js/api.js" asp-append-version="true"></script>
+  <script src="~/js/favorites.js" asp-append-version="true"></script>
+  <script src="~/js/player.js" asp-append-version="true"></script>
+  <script src="~/js/search.js" asp-append-version="true"></script>
+  <script src="~/js/favorites-page.js" asp-append-version="true"></script>
+  <script src="~/js/app.js" asp-append-version="true"></script>
+
+  @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,114 @@
+@{
+  var initialView = ViewData["InitialView"] as string ?? "explore";
+  var showExplore = initialView != "favorites";
+  var showFavorites = initialView == "favorites";
+}
+<main class="main-content" id="main-content">
+  <div id="view-explore" class="view-panel @(showExplore ? "" : "is-hidden")" data-view="explore" role="region" aria-label="Khám phá" aria-hidden="@(showExplore ? "false" : "true")">
+
+    <!-- Search Results Header -->
+    <div class="results-header" id="results-header" style="display: none;">
+      <div>
+        <h2 class="results-title">
+          Kết quả cho "<span id="results-query"></span>"
+        </h2>
+        <span class="results-count" id="results-count"></span>
+      </div>
+      <div class="results-tools">
+        <div class="dropdown-container sort-dropdown" id="sort-dropdown">
+          <button type="button" class="sort-dropdown__trigger" id="sort-trigger"
+            aria-haspopup="listbox" aria-expanded="false" aria-label="Sắp xếp kết quả">
+            <span id="sort-trigger-label">Mặc định</span>
+            <i data-lucide="chevron-down" class="sort-dropdown__chevron" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-menu sort-dropdown__menu" id="sort-menu" role="listbox" aria-labelledby="sort-trigger">
+            <button type="button" role="option" class="dropdown-item sort-option" data-value="default" aria-selected="true">Mặc định</button>
+            <button type="button" role="option" class="dropdown-item sort-option" data-value="release-desc" aria-selected="false">Ngày phát hành mới nhất</button>
+            <button type="button" role="option" class="dropdown-item sort-option" data-value="title-asc" aria-selected="false">Tên bài hát A-Z</button>
+            <button type="button" role="option" class="dropdown-item sort-option" data-value="artist-asc" aria-selected="false">Nghệ sĩ A-Z</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" id="error-state" style="display: none;" role="alert">
+      <i data-lucide="wifi-off"></i>
+      <p id="error-message">Đã xảy ra lỗi</p>
+      <button class="btn-primary" id="retry-btn">Thử lại</button>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state" style="display: none;">
+      <i data-lucide="search-x"></i>
+      <p class="empty-title">Không tìm thấy kết quả</p>
+      <p class="empty-desc" id="empty-desc">Thử tìm với từ khóa khác</p>
+    </div>
+
+    <!-- Welcome State (mặc định khi chưa tìm kiếm) -->
+    <div class="welcome-state" id="welcome-state">
+      <i data-lucide="music-2"></i>
+      <h1 class="welcome-title">Khám phá âm nhạc</h1>
+      <p class="welcome-desc">Nhập tên bài hát, nghệ sĩ hoặc album để bắt đầu</p>
+    </div>
+
+    <!-- Song Grid -->
+    <div class="song-grid" id="song-grid" role="list" aria-label="Danh sách bài hát">
+      <!-- Song cards rendered by JS -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="search-pagination" style="display:none;" aria-label="Phân trang kết quả tìm kiếm">
+      <button class="pagination-nav pagination-nav--prev" id="pagination-prev" type="button" aria-label="Trang trước">
+        <i data-lucide="chevron-left" class="pagination-nav__icon" aria-hidden="true"></i>
+      </button>
+      <div class="pagination-pages-wrap">
+        <div class="pagination-pages" id="pagination-pages" role="navigation" aria-label="Danh sách trang"></div>
+        <span class="pagination-mobile-summary" id="pagination-mobile-summary" aria-live="polite"></span>
+      </div>
+      <button class="pagination-nav pagination-nav--next" id="pagination-next" type="button" aria-label="Trang sau">
+        <i data-lucide="chevron-right" class="pagination-nav__icon" aria-hidden="true"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <div id="view-favorites" class="view-panel @(showFavorites ? "" : "is-hidden")" data-view="favorites" role="region" aria-label="Yêu thích" aria-hidden="@(showFavorites ? "false" : "true")">
+
+    <div class="page-header">
+      <h1 class="page-title">
+        <i data-lucide="heart" class="page-title-icon"></i>
+        Bài hát yêu thích
+      </h1>
+      <div class="page-header-actions">
+        <span class="badge" id="fav-count-badge">0 bài</span>
+        <button class="btn btn-danger-outline hide-by-default" id="clear-all-btn" type="button">
+          <i data-lucide="trash-2"></i>
+          <span>Xóa tất cả</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="empty-state hide-by-default" id="fav-empty-state">
+      <i data-lucide="heart" class="fav-empty-icon"></i>
+      <p class="empty-title">Chưa có bài hát yêu thích</p>
+      <p class="empty-desc">Nhấn ♥ trên bất kỳ bài hát nào để lưu vào đây</p>
+      <a href="/" class="btn-primary nav-spa" data-nav-view="explore">Khám phá âm nhạc</a>
+    </div>
+
+    <div class="song-grid" id="fav-grid" role="list" aria-label="Danh sách bài hát yêu thích">
+    </div>
+
+    <dialog id="confirm-clear-dialog" class="dialog">
+      <div class="dialog__content">
+        <h2 class="dialog__title">Xóa toàn bộ yêu thích?</h2>
+        <p class="dialog__desc">Hành động này không thể hoàn tác.</p>
+        <div class="dialog__actions">
+          <button type="button" class="btn-ghost" id="cancel-clear-btn">Hủy</button>
+          <button type="button" class="btn-danger" id="confirm-clear-btn">Xóa tất cả</button>
+        </div>
+      </div>
+    </dialog>
+
+  </div>
+</main>
